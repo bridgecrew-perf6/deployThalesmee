@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh "cd /home/jonathan"
               script {
-                zip archive: true, dir: '', glob: '', zipFile: 'nameOfFile'
+                zip zipFile : "/home/jonathan", archive: true, dir: '', glob: '', zipFile: 'nameOfFile'
               }
             }
      }
