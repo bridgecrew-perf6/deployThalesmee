@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage ('push artifact') {
       steps {
-        dir ("/home/jonathan"){
+        dir ("/home/jonathan/Documents"){
           script {
-            zip archive: true, dir: '', glob: '', zipFile: '/home/jonathan'
+            zip archive: true, dir: '', glob: '', zipFile: ''
           }
         }
       }
