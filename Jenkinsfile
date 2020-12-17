@@ -2,9 +2,8 @@ pipeline {
   agent any
   stages {
     stage ('push artifact') {
-      dir ("/home/jonathan"){
-        steps {
-            sh "cd /home/jonathan"
+      steps {
+        dir ("/home/jonathan"){
           script {
             zip archive: true, dir: '', glob: '', zipFile: '/home/jonathan'
           }
