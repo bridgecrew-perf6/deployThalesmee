@@ -1,7 +1,7 @@
 <?php
 //etablie une connexion a la base alice
 try{
-	$hostname = "localhost";            //host
+	$hostname = "db";            //host
 	$dbname = "bdmee_prod";            //db name
 	$username = "mee";            // username like 'sa'
 	$pw = "pipo";                // password for the user
