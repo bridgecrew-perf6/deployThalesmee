@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage ('Create .zip from source code') {
       steps {
-        if (fileExists('ThalesMee-1.0.0.zip') sh 'rm ThalesMee-1.0.0.zip'
+        if (fileExists('ThalesMee-1.0.0.zip') {
+          sh 'rm ThalesMee-1.0.0.zip'
+        }
         script {
           zip archive: true, dir: '', glob: '', zipFile: 'ThalesMee-1.0.0.zip'
         }
