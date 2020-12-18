@@ -1,12 +1,12 @@
 pipeline {
   agent any
-  environment {
-    FILENAME = fil
-  }
+
   stages {
     stage ('Delete old file') {
-      if (fileExists("ThalesMee-1.0.0.zip")) {
-        sh 'rm ThalesMee-1.0.0.zip'
+      steps {
+        if (fileExists("ThalesMee-1.0.0.zip")) {
+          sh 'rm ThalesMee-1.0.0.zip'
+        }
       }
     }
     stage ('Create .zip from source code') {
