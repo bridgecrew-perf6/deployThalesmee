@@ -11,9 +11,13 @@ pipeline {
     }
     stage ('Deploy docker containers'){
       steps {
-        sh 'docker stop $(docker ps -aq)'
-        sh 'docker rm $(docker ps -aq)'
-        sh 'docker-compose up'
+        sh '''
+          OLD = "$(docker ps -aq)"
+          if [ -n "$OLD"]; then
+            docker stop $OLD && docker rm $OLD
+          fi
+          docker-compose up
+        '''
       }
     }
   }
