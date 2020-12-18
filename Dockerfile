@@ -113,7 +113,7 @@ RUN php-5.2.17/configure \
 
 RUN apt-get -yqq update && apt-get install -yqq apache2
 RUN chmod -R 777 /var/www/html
-RUN chmod -R 777 /var/lib/php/session/
+RUN chmod -R 777 /var/lib/php
 ADD ./font/arialbd.ttf /usr/share/fonts/truetype/
 ADD ./font/arial.ttf /usr/share/fonts/truetype/
 
