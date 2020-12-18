@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   stages {
-    stage ('Delete old file') {
+    stage ('Delete old zipped file') {
       steps {
         script {
           if (fileExists("ThalesMee-1.0.0.zip")) {
@@ -11,7 +11,7 @@ pipeline {
         }
       }
     }
-    stage ('Create .zip from source code') {
+    stage ('Create zipped file from source code') {
       steps {
         script {
           zip archive: true, dir: '', glob: '', zipFile: 'ThalesMee-1.0.0.zip'
