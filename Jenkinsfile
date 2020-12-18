@@ -1,10 +1,15 @@
 pipeline {
   agent any
+  environment {
+    FILENAME = fil
+  }
   stages {
-    stage ('Create .zip from source code') {
-      if (fileExists('ThalesMee-1.0.0.zip')) {
+    stage ('Delete old file') {
+      if (fileExists("ThalesMee-1.0.0.zip")) {
         sh 'rm ThalesMee-1.0.0.zip'
       }
+    }
+    stage ('Create .zip from source code')
       steps {
         script {
           zip archive: true, dir: '', glob: '', zipFile: 'ThalesMee-1.0.0.zip'
