@@ -3,7 +3,7 @@ services:
 
   apache:
 
-    build: './php/'
+    build: './'
     restart: always
     depends_on:
       - db
