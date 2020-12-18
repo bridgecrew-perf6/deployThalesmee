@@ -10,7 +10,7 @@ pipeline {
       }
     }
     stage ('Deploy docker containers'){
-      steps{
+      steps {
         sh "docker stop $(docker ps -aq)"
         sh "docker rm $(docker ps -aq)"
         sh "docker-compose up"
