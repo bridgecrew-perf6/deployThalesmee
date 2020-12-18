@@ -6,7 +6,7 @@ pipeline {
         //script {
         //  zip archive: true, dir: '', glob: '', zipFile: 'ThalesMee-1.0.0.zip'
         //}
-        sh "docker-compose up "
+        sh "docker-compose up"
       }
     }
   }
