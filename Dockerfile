@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Votre nom
+
 # Install dependencies
 
 RUN apt-get update && apt-get install -y gcc make build-essential \
