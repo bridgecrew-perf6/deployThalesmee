@@ -21,9 +21,9 @@ pipeline {
     stage ('Deploy docker containers'){
       steps {
         sh '''
-          nb = $(docker ps -aq | wc -l)
+          nb = $(docker ps -aq) | wc -l
           if [ nb -ne 0]; then
-            docker stop $OLD && docker rm $OLD
+            docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
           fi
           docker-compose up
         '''
