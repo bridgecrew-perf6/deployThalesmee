@@ -40,6 +40,174 @@ function envoi_mail($obj, $dest, $emet, $cc, $corps,$codeService)
 	//return 0;
 }
 
+function samedi ($dateDeb, $dateFin, $duree)
+{
+	$timeDeb = explode (" ", $dateDeb);
+	$date_debut = explode("-", $timeDeb[0]);
+	$heure_debut = explode (":", $timeDeb[1])[0];
+	$minutes_debut = explode (":", $timeDeb[1])[1];
+	$samedi = 0;
+	while (true)
+	{
+		if(strtotime($dateDeb) >= strtotime($dateFin)) return round($samedi/9,1);
+
+		if ($heure_debut >= 17) $dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+		else {
+
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." ".$heure_debut.":".$minutes_debut." +1 hours"));
+			if (getdate(strtotime($dateDeb))["wday"] == 6) $samedi += 1;
+		}
+
+		$timeDeb = explode (" ", $dateDeb);
+		$date_debut = explode("-", $timeDeb[0]);
+		$heure_debut = explode (":", $timeDeb[1])[0];
+		$minutes_debut = explode (":", $timeDeb[1])[1];
+	}
+}
+
+function dateFin ($duree, $dateDeb, $samedi)
+{
+	$timeDeb = explode (" ", $dateDeb);
+	$date_debut = explode("-", $timeDeb[0]);
+	$horaire = explode (":", $timeDeb[1]);
+	if (isset($horaire[1]))
+	{
+		$heure_debut = $horaire[0];
+		$minutes_debut = $horaire[1];
+	}else
+	{
+		$heure_debut = $horaire;
+		$minutes_debut = "00";
+	}
+	
+	for ($i = 0; $i < $duree; $i++)
+	{
+		if ($heure_debut >= 17) {
+
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		//Samedi
+		if (getdate(strtotime($dateDeb))["wday"] == 6 && $samedi ==0)
+		{
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		//Dimanche
+		if (getdate(strtotime($dateDeb))["wday"] == 0)
+		{
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		
+		$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." ".$heure_debut.":".$minutes_debut." +1 hours"));
+
+		$timeDeb = explode (" ", $dateDeb);
+		$date_debut = explode("-", $timeDeb[0]);
+		$heure_debut = explode (":", $timeDeb[1])[0];
+		$minutes_debut = explode (":", $timeDeb[1])[1];
+		
+	}
+	return $dateDeb;
+}
+
+function dFin ($duree, $dateDeb, $samedi)
+{
+	$timeDeb = explode (" ", $dateDeb);
+	$date_debut = explode("-", $timeDeb[0]);
+	$horaire = explode (":", $timeDeb[1]);
+	if (isset($horaire[1]))
+	{
+		$heure_debut = $horaire[0];
+		$minutes_debut = $horaire[1];
+	}else
+	{
+		$heure_debut = $horaire;
+		$minutes_debut = "00";
+	}
+	
+	for ($i = 0; $i < $duree; $i++)
+	{
+		if ($heure_debut > 17) {
+
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		//Samedi
+		if (getdate(strtotime($dateDeb))["wday"] == 6 && $samedi ==0)
+		{
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		//Dimanche
+		if (getdate(strtotime($dateDeb))["wday"] == 0)
+		{
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+			$timeDeb = explode (" ", $dateDeb);
+			$date_debut = explode("-", $timeDeb[0]);
+			$heure_debut = explode (":", $timeDeb[1])[0];
+			$minutes_debut = explode (":", $timeDeb[1])[1];
+		}
+
+		
+		$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." ".$heure_debut.":".$minutes_debut." +1 hours"));
+
+		$timeDeb = explode (" ", $dateDeb);
+		$date_debut = explode("-", $timeDeb[0]);
+		$heure_debut = explode (":", $timeDeb[1])[0];
+		$minutes_debut = explode (":", $timeDeb[1])[1];
+		
+	}
+	$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." ".$heure_debut.":".$minutes_debut." -1 day"));
+	return $dateDeb;
+}
+
+function dureePrimavera ($dateDeb, $dateFin){
+
+	$timeDeb = explode (" ", $dateDeb);
+	$date_debut = explode("-", $timeDeb[0]);
+	$heure_debut = explode (":", $timeDeb[1])[0];
+	$minutes_debut = explode (":", $timeDeb[1])[1];
+	$duree = 0;
+	while (true)
+	{
+		if(strtotime($dateDeb) >= strtotime($dateFin)) return round($duree/9,1);
+
+		if ($heure_debut >= 17) $dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." 08:00 +1 day"));
+		else {
+
+			$dateDeb = date("Y-m-d H:i", strtotime($date_debut[0]."-".$date_debut[1]."-".$date_debut[2]." ".$heure_debut.":".$minutes_debut." +1 hours"));
+
+			if (getdate(strtotime($dateDeb))["wday"] != 0 && getdate(strtotime($dateDeb))["wday"] != 6) $duree += 1;
+		}
+
+		$timeDeb = explode (" ", $dateDeb);
+		$date_debut = explode("-", $timeDeb[0]);
+		$heure_debut = explode (":", $timeDeb[1])[0];
+		$minutes_debut = explode (":", $timeDeb[1])[1];
+	}
+}
+
 //Durée entre deux dates
 function duree ($dateDeb, $dateFin){
 	
@@ -50,8 +218,10 @@ function duree ($dateDeb, $dateFin){
 		
 		//echo $dateDeb."<br/>";
 		//echo $dateFin."<br/>";
+		$dateDeb = str_replace('/','-',$dateDeb);
+		$dateFin = str_replace('/','-',$dateFin);
 		$heure = explode (" ", $dateDeb);
-		$date_debut = explode("/", $heure[0]);
+		$date_debut = explode("-", $heure[0]);
 		$heure_debut = explode (":", $heure[1])[0];
 
 		
@@ -97,6 +267,75 @@ function duree ($dateDeb, $dateFin){
 			}
 
 		}
+	
+	}
+}
+
+//Durée entre deux dates sans we
+function duree_we ($dateDeb, $dateFin){
+	
+	$diff = array();  		// Initialisation du retour
+	$res = 0;
+	
+	while (true){
+		
+		//echo $dateDeb."<br/>";
+		//echo $dateFin."<br/>";
+		$dateDeb = str_replace('/','-',$dateDeb);
+		$dateFin = str_replace('/','-',$dateFin);
+		$heure = explode (" ", $dateDeb);
+		$date_debut = explode("-", $heure[0]);
+		$heure_debut = explode (":", $heure[1])[0];
+
+		if (getdate(strtotime($dateDeb))["wday"] != 0 && getdate(strtotime($dateDeb))["wday"] != 6)
+		{
+			if (strtotime(str_replace('/','-',$dateDeb)) == strtotime(str_replace('/','-',$dateFin)))
+			{
+				$diff["heure"] = $res;
+				$diff["minutes"] = 0;
+				return $diff;
+			
+			}else if (strtotime(str_replace('/','-',$dateDeb)) > strtotime(str_replace('/','-',$dateFin))){
+						
+				$res -= 1;
+				$minutes = 0;
+				$dateDeb = date("d/m/Y H:i", strtotime($date_debut[2]."-".$date_debut[1]."-".$date_debut[0]." ".$heure[1]." -1 hours"));
+				
+				while (strtotime(str_replace('/','-',$dateDeb)) != strtotime(str_replace('/','-',$dateFin))){
+					
+					$heure = explode (" ", $dateDeb);
+					$date_debut = explode("/", $heure[0]);
+					
+					$dateDeb = date("d/m/Y H:i", strtotime($date_debut[2]."-".$date_debut[1]."-".$date_debut[0]." ".$heure[1]." +1 minutes"));
+					$minutes += 1;
+					
+				}
+				
+				$diff["heure"] = $res;
+				$diff["minutes"] = $minutes;
+				return $diff;
+				
+			}else{
+				
+				//echo $heure_debut."</br>";
+				//echo $heure_debut[1]."</br>";		
+				if (intval($heure_debut) >= 8 && intval($heure_debut) < 17){
+					
+					$res += 1;
+					//echo $res."<br/>";
+					$dateDeb = date("d/m/Y H:i", strtotime($date_debut[2]."-".$date_debut[1]."-".$date_debut[0]." ".$heure[1]." +1 hours"));
+					
+				}else {
+					
+					$dateDeb = date("d/m/Y H:i", strtotime($date_debut[2]."-".$date_debut[1]."-".$date_debut[0]." ".$heure[1]." +1 hours"));
+				}
+
+			}
+		}else
+		{
+			$dateDeb = date("d/m/Y H:i", strtotime($date_debut[2]."-".$date_debut[1]."-".$date_debut[0]." ".$heure[1]." +1 hours"));
+		}
+		
 	
 	}
 }

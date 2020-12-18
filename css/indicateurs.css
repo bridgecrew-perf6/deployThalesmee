@@ -1,0 +1,36 @@
+.list-group {
+	
+	margin : 0;
+}
+
+.list-group-item:hover {
+	
+	color:blue;
+	cursor: pointer;
+}
+
+.jumbotron {
+	
+	border : 2px solid white;
+	border-radius : 20px;
+}
+
+.vertical-align {
+
+	display:flex;
+	align-items : center;
+}
+
+#export{
+	
+	margin-top:20px;
+}
+
+img{
+	
+	width : 60%;
+}
+
+.select{
+	background-color: #E6E6E6;
+}

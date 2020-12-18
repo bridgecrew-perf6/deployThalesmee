@@ -1,0 +1,8 @@
+.OB Procédure affectée
+.AD redact
+.CC demand
+Bonjour,
+La procédure n°1011 de l'affaire test vous a été affectée, veuillez vous connecter sur l'outil de demandes de procédure (http://thalesmee) pour commencer la rédaction.
+
+Emetteur: ferril
+Date d'émission: 16/01/2020 10:37

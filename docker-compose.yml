@@ -11,9 +11,9 @@ services:
       - "80:80"
     volumes:
       - ./:/var/www/html/
-      - ./php/php.ini:/etc/php5/cli/php.ini
-      - ./php/php.ini:/etc/php5/apache/php.ini
-      - ./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./php.ini:/etc/php5/cli/php.ini
+      - ./php.ini:/etc/php5/apache/php.ini
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
 
   db:
 
