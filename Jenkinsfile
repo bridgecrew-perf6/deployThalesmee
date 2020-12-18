@@ -9,7 +9,7 @@ pipeline {
         sh 'rm ThalesMee-1.0.0.zip'
       }
     }
-    stage ('Create .zip from source code')
+    stage ('Create .zip from source code') {
       steps {
         script {
           zip archive: true, dir: '', glob: '', zipFile: 'ThalesMee-1.0.0.zip'
