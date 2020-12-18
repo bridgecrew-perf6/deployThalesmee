@@ -17,7 +17,7 @@ services:
 
   db:
 
-    image: mariadb:lastest
+    image: mariadb:latest
     restart : always
     ports: 
       - 3306:3306
