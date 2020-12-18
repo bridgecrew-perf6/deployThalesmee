@@ -4,8 +4,10 @@ pipeline {
   stages {
     stage ('Delete old file') {
       steps {
-        if (fileExists("ThalesMee-1.0.0.zip")) {
-          sh 'rm ThalesMee-1.0.0.zip'
+        script {
+          if (fileExists("ThalesMee-1.0.0.zip")) {
+            sh 'rm ThalesMee-1.0.0.zip'
+          }
         }
       }
     }
