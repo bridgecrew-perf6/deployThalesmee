@@ -10,7 +10,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./www/:/var/www/html/
+      - ./:/var/www/html/
       - ./php/php.ini:/etc/php5/cli/php.ini
       - ./php/php.ini:/etc/php5/apache/php.ini
       - ./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
