@@ -422,7 +422,7 @@ $(document).ready(function() {
 
 		if (date_planifie != "null" && date_planifie_primavera != "null" && duree_planifie != 0 && duree_planifie_primavera != 0)
 		{
-			if (date_planifie != date_planifie_primavera)
+			if (date_planifie != date_planifie_primavera || duree_planifie != duree_planifie_primavera)
 			{
 				diff = true;
 			}

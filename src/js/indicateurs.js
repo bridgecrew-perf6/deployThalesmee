@@ -243,12 +243,14 @@ function mois_cours ()
 {	
 	var now = new Date();
 	var first = new Date (now.setDate(1));
-	if (first.getMonth() < 10) $("#dateDeb").val("0"+first.getDate()+"/0"+first.getMonth()+"/"+first.getFullYear());
-	else $("#dateDeb").val("0"+first.getDate()+"/"+first.getMonth()+"/"+first.getFullYear());
+	var month_first = first.getMonth() + 1;
+	if (month_first < 10) $("#dateDeb").val("0"+first.getDate()+"/0"+month_first+"/"+first.getFullYear());
+	else $("#dateDeb").val("0"+first.getDate()+"/"+month_first+"/"+first.getFullYear());
+
 	var last = new Date (now.setDate(get_nbJour(now)));
-	last = new Date (last.setMonth(last.getMonth()+1));
-	if (first.getMonth() < 10) $("#dateFin").val(get_nbJour(now)+"/0"+first.getMonth()+"/"+last.getFullYear());
-	else $("#dateFin").val(get_nbJour(now)+"/"+first.getMonth()+"/"+last.getFullYear());
+	var month_last = last.getMonth() + 1;
+	if (month_last < 10) $("#dateFin").val(get_nbJour(now)+"/0"+month_last+"/"+last.getFullYear());
+	else $("#dateFin").val(get_nbJour(now)+"/"+month_last+"/"+last.getFullYear());
 	changeDate()
 }
 

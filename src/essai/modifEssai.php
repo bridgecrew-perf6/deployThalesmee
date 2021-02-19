@@ -19,459 +19,459 @@ if (isset($_POST['badge'])){
 	
 	if ($dateFormDeb < $dateFormFin){
 	
-	//htmlspecialchars remplace les caracteres speciaux par leurs équivalent html, évite la plupart des erreurs/failles d'injection sql avec par exemple '
-		
-	$affaire=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['nom_aff']));
-	$equipement=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['nom_eq']));
-	$os=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['n_os']));
-	$remarque=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['remarque']));
-	$badge=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['badge']));
-	$depositaire=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['depositaire']));
-	$telDep=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['tel']));
-	$idEs=$_POST['idEssai'];
-	
-	//Gestion des anomalies
-	$str = "select idEssai, quiss_mpti, autre, descriptif, heure, eurosPerdus, status from anomalie where idEssai=$idEs";
-	$req2 = @mysqli_query($bdd, $str);
-	$lg = mysqli_fetch_object($req2);
-
-	//Modification des anomalies
-	if (isset($_POST['anomalie'])){
-		
-		$choix = $_POST['anomalie'];
-		if ($choix == 1){
+		//htmlspecialchars remplace les caracteres speciaux par leurs équivalent html, évite la plupart des erreurs/failles d'injection sql avec par exemple '
 			
-			$sect = $_POST['secteur'];
-			$str = "SELECT idLigne FROM ligneproduit WHERE nomLigne = '$sect'";
+		$affaire=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['nom_aff']));
+		$equipement=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['nom_eq']));
+		$os=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['n_os']));
+		$remarque=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['remarque']));
+		$badge=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['badge']));
+		$depositaire=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['depositaire']));
+		$telDep=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['tel']));
+		$idEs=$_POST['idEssai'];
+		
+		//Gestion des anomalies
+		$str = "select idEssai, quiss_mpti, autre, descriptif, heure, eurosPerdus, status from anomalie where idEssai=$idEs";
+		$req2 = @mysqli_query($bdd, $str);
+		$lg = mysqli_fetch_object($req2);
+
+		//Modification des anomalies
+		if (isset($_POST['anomalie'])){
+			
+			$choix = $_POST['anomalie'];
+			if ($choix == 1){
+				
+				$sect = $_POST['secteur'];
+				$str = "SELECT idLigne FROM ligneproduit WHERE nomLigne = '$sect'";
+				$req = mysqli_query($bdd, $str);
+				$lg = mysqli_fetch_object($req);
+				$sect = $lg->idLigne;
+				
+				if (mysqli_num_rows($req2)!=0)
+				{	
+					//Type			
+					$quiss = $_POST['quiss/mpti'];
+					//Heure
+					if (isset($_POST['heure'])) $heure = $_POST['heure'];
+					else $heure = '';
+					//Coût
+					if (isset($_POST['euros'])) $euros = $_POST['euros'];
+					else $euros = '';	
+					//Desscriptif
+					if (isset($_POST['descriptif'])) $decr=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['descriptif']));
+					else $decr = '';	
+					//Status
+					if (isset($_POST['statusEcart'])) $status = intval($_POST['statusEcart']);
+					else $status = 0;	
+				
+					$str = "update anomalie set quiss_mpti ='$quiss', autre='$sect', descriptif='$decr', heure='$heure', eurosPerdus = '$euros', status=$status where idEssai=$idEs;";
+					$req2 = @mysqli_query($bdd, $str);
+				
+				}else
+				{
+					//Type
+					$quiss = $_POST['quiss/mpti'];
+					//Heure
+					if (isset($_POST['heure'])) $heure = $_POST['heure'];
+					else $heure = '';
+					//Coût
+					if (isset($_POST['euros'])) $euros = $_POST['euros'];
+					else $euros = '';	
+					//Descriptif
+					if (isset($_POST['descriptif'])) $decr=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['descriptif']));
+					else $decr = '';	
+					//Status
+					if (isset($_POST['statusEcart'])) $status = intval($_POST['statusEcart']);
+					else $status = 0;	
+					
+					$str="insert into anomalie value ($idEs, '$quiss', '$sect' ,'$decr', '$heure', '$euros', $status)";
+					$req=mysqli_query($bdd,$str);
+				}
+			}
+			
+		}else
+		{		
+			$str = "delete from anomalie where idEssai=$idEs"; //Suppression de l'anomalie
+			$req2 = @mysqli_query($bdd, $str);
+			$str="delete from cause_anomalie where idEssai_ESSAI = $idEs"; //Suppression de la cause
+			$req=mysqli_query($bdd,$str);	
+		}
+
+		//Ligne de produit
+		if (isset ($_POST['ligneProd']) && $_POST["ligneProd"] != "-1"){
+
+			$ligne = $_POST['ligneProd'];
+			
+			$str = "SELECT idLigne FROM ligneproduit WHERE nomLigne = '$ligne'";
 			$req = mysqli_query($bdd, $str);
 			$lg = mysqli_fetch_object($req);
-			$sect = $lg->idLigne;
+			$ligne = $lg->idLigne;
 			
-			if (mysqli_num_rows($req2)!=0)
-			{	
-				//Type			
-				$quiss = $_POST['quiss/mpti'];
-				//Heure
-				if (isset($_POST['heure'])) $heure = $_POST['heure'];
-				else $heure = '';
-				//Coût
-				if (isset($_POST['euros'])) $euros = $_POST['euros'];
-				else $euros = '';	
-				//Desscriptif
-				if (isset($_POST['descriptif'])) $decr=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['descriptif']));
-				else $decr = '';	
-				//Status
-				if (isset($_POST['statusEcart'])) $status = intval($_POST['statusEcart']);
-				else $status = 0;	
+			$str="update essai set ligneProd=$ligne where idEssai = $idEs";
+			$req=mysqli_query($bdd,$str);
 			
-				$str = "update anomalie set quiss_mpti ='$quiss', autre='$sect', descriptif='$decr', heure='$heure', eurosPerdus = '$euros', status=$status where idEssai=$idEs;";
-				$req2 = @mysqli_query($bdd, $str);
+		}else{
 			
-			}else
-			{
-				//Type
-				$quiss = $_POST['quiss/mpti'];
-				//Heure
-				if (isset($_POST['heure'])) $heure = $_POST['heure'];
-				else $heure = '';
-				//Coût
-				if (isset($_POST['euros'])) $euros = $_POST['euros'];
-				else $euros = '';	
-				//Descriptif
-				if (isset($_POST['descriptif'])) $decr=htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['descriptif']));
-				else $decr = '';	
-				//Status
-				if (isset($_POST['statusEcart'])) $status = intval($_POST['statusEcart']);
-				else $status = 0;	
+			$str="update essai set ligneProd=null where idEssai = $idEs";
+			$req=mysqli_query($bdd,$str);
+		}
+
+		//Pastille de retard (Orange)
+		if (isset ($_POST['pastilleOrange'])){
+			
+			$choix = $_POST['pastilleOrange'];
+			if ($choix == 1){
 				
-				$str="insert into anomalie value ($idEs, '$quiss', '$sect' ,'$decr', '$heure', '$euros', $status)";
+				$str="update essai set pastilleOrange=1 where idEssai = $idEs";
+				$req=mysqli_query($bdd,$str);
+				$str="update essai set retardME=0 where idEssai = $idEs";
 				$req=mysqli_query($bdd,$str);
 			}
-		}
-		
-	}else
-	{		
-		$str = "delete from anomalie where idEssai=$idEs"; //Suppression de l'anomalie
-		$req2 = @mysqli_query($bdd, $str);
-		$str="delete from cause_anomalie where idEssai_ESSAI = $idEs"; //Suppression de la cause
-		$req=mysqli_query($bdd,$str);	
-	}
-
-	//Ligne de produit
-	if (isset ($_POST['ligneProd']) && $_POST["ligneProd"] != "-1"){
-
-		$ligne = $_POST['ligneProd'];
-		
-		$str = "SELECT idLigne FROM ligneproduit WHERE nomLigne = '$ligne'";
-		$req = mysqli_query($bdd, $str);
-		$lg = mysqli_fetch_object($req);
-		$ligne = $lg->idLigne;
-		
-		$str="update essai set ligneProd=$ligne where idEssai = $idEs";
-		$req=mysqli_query($bdd,$str);
-		
-	}else{
-		
-		$str="update essai set ligneProd=null where idEssai = $idEs";
-		$req=mysqli_query($bdd,$str);
-	}
-
-	//Pastille de retard (Orange)
-	if (isset ($_POST['pastilleOrange'])){
-		
-		$choix = $_POST['pastilleOrange'];
-		if ($choix == 1){
-			
-			$str="update essai set pastilleOrange=1 where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);
-			$str="update essai set retardME=0 where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);
-		}
-	}else 
-	{
-		
-		$str="select pastilleOrange from essai where idEssai = $idEs";
-		$req=mysqli_query($bdd,$str);
-		$lg=mysqli_fetch_object($req);
-		if ($lg->pastilleOrange != 0){
-			$str="update essai set pastilleOrange=2 where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);
-		}
-		if (isset ($_POST['retardME'])){
-		
-		$choix = $_POST['retardME'];
-		if ($choix == 3){
-			
-			$str="update essai set retardME=1 where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);
-		}
 		}else 
 		{
-			$str="select retardME from essai where idEssai = $idEs";
+			
+			$str="select pastilleOrange from essai where idEssai = $idEs";
 			$req=mysqli_query($bdd,$str);
 			$lg=mysqli_fetch_object($req);
-			if ($lg->retardME != 0){
-				$str="update essai set retardME=2 where idEssai = $idEs";
+			if ($lg->pastilleOrange != 0){
+				$str="update essai set pastilleOrange=2 where idEssai = $idEs";
 				$req=mysqli_query($bdd,$str);
+			}
+			if (isset ($_POST['retardME'])){
+			
+			$choix = $_POST['retardME'];
+			if ($choix == 3){
+				
+				$str="update essai set retardME=1 where idEssai = $idEs";
+				$req=mysqli_query($bdd,$str);
+			}
+			}else 
+			{
+				$str="select retardME from essai where idEssai = $idEs";
+				$req=mysqli_query($bdd,$str);
+				$lg=mysqli_fetch_object($req);
+				if ($lg->retardME != 0){
+					$str="update essai set retardME=2 where idEssai = $idEs";
+					$req=mysqli_query($bdd,$str);
+					
+				}
+				
+			}
+		}
+
+		//Pastille rouge (Non Planifié)
+		if (isset ($_POST['pastilleRouge'])){
+			
+			$choix = $_POST['pastilleRouge'];
+			if ($choix == 2){
+				
+			$str="update essai set pastilleRouge=1 where idEssai = $idEs";
+			$req=mysqli_query($bdd,$str);
+			}
+
+		}else 
+		{
+			$str="update essai set pastilleRouge=0 where idEssai = $idEs";
+			$req=mysqli_query($bdd,$str);
+		}	
+		
+		//Nom du technicien
+		$str = "SELECT nomEmp FROM vibtesterpar WHERE idEssai=$idEs;";
+		$reqTechActuel=mysqli_query($bdd,$str);
+		
+		if (isset($_POST['tech']) && $_POST['tech'] != "Non renseigné"){
+			
+			if(mysqli_num_rows($reqTechActuel)>0)
+			{
+				$nom = $_POST['tech'];
+				$str="update vibtesterpar set nomEmp='$nom' where idEssai = $idEs";
+				$req=mysqli_query($bdd,$str);	
+			}else{
+				
+				$nom = $_POST['tech'];
+				$str="insert into vibtesterpar value($idEs, '$nom')";
+				$req=mysqli_query($bdd,$str);	
 				
 			}
 			
-		}
-	}
-
-	//Pastille rouge (Non Planifié)
-	if (isset ($_POST['pastilleRouge'])){
-		
-		$choix = $_POST['pastilleRouge'];
-		if ($choix == 2){
+		}else if (isset($_POST['tech']) && $_POST['tech'] == "Non renseigné"){
 			
-		$str="update essai set pastilleRouge=1 where idEssai = $idEs";
-		$req=mysqli_query($bdd,$str);
-		}
-
-	}else 
-	{
-		$str="update essai set pastilleRouge=0 where idEssai = $idEs";
-		$req=mysqli_query($bdd,$str);
-	}	
-	
-	//Nom du technicien
-	$str = "SELECT nomEmp FROM vibtesterpar WHERE idEssai=$idEs;";
-	$reqTechActuel=mysqli_query($bdd,$str);
-	
-	if (isset($_POST['tech']) && $_POST['tech'] != "Non renseigné"){
-		
-		if(mysqli_num_rows($reqTechActuel)>0)
-		{
-			$nom = $_POST['tech'];
-			$str="update vibtesterpar set nomEmp='$nom' where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);	
-		}else{
-			
-			$nom = $_POST['tech'];
-			$str="insert into vibtesterpar value($idEs, '$nom')";
-			$req=mysqli_query($bdd,$str);	
-			
-		}
-		
-	}else if (isset($_POST['tech']) && $_POST['tech'] == "Non renseigné"){
-		
-		if(mysqli_num_rows($reqTechActuel)>0)
-		{
-			
-			$str="delete from vibtesterpar where idEssai = $idEs";
-			$req=mysqli_query($bdd,$str);	
-		}
-		
-	}
-	
-	//Famille de produit
-	$str = "SELECT famille_Famille FROM famille_essai WHERE idEssai_Essai=$idEs;";
-	$reqFamActuel=mysqli_query($bdd,$str);
-	
-	if (isset($_POST['famille']) && $_POST['famille'] != "Non renseigné"){
-
-		$choix = explode ("-",$_POST['famille']);
-		$famille = $choix[1];
-		$modele = $choix[0];
-		$heure = $_POST['heure_famille'];
-		if(mysqli_num_rows($reqFamActuel)>0)
-		{
-			
-			$str="UPDATE famille_essai set famille_FAMILLE='$famille', heure_FAMILLE='$heure', modeleFamille_FAMILLE='$modele', resteHeure= '$heure' where idEssai_ESSAI = $idEs";
-			$req=mysqli_query($bdd,$str);
-			
-		}else{
-			
-			$str="INSERT into famille_essai value($idEs, '$famille', '$heure', '$modele', '$heure', NULL)";
-			$req=mysqli_query($bdd,$str);	
-			
-		}
-		
-		
-	}else if (isset($_POST['famille']) && $_POST['famille'] == "Non renseigné"){
-		
-		if(mysqli_num_rows($reqFamActuel)>0)
-		{
-			
-			$str="delete from famille_essai where idEssai_ESSAI = $idEs";
-			$req=mysqli_query($bdd,$str);	
-		}
-	}
-
-	//Cause anomalie
-	$str = "SELECT nomCause FROM cause_anomalie WHERE idEssai_ESSAI=$idEs;";
-	$reqCauActuel=mysqli_query($bdd,$str);
-
-	if (isset($_POST["anomalie"]) && isset($_POST['cause']) && $_POST['cause'] != "Non renseigné"){ //Si renseigné
-		
-		$cause = $_POST['cause'];
-		if(mysqli_num_rows($reqCauActuel)>0) //Et que avant la cause était renseigné
-		{
-			
-			$str="update cause_anomalie set nomCause='$cause' where idEssai_ESSAI = $idEs"; //Update
-			$req=mysqli_query($bdd,$str);
-			
-		}else{
-			
-			$str="insert into cause_anomalie value($idEs, '$cause')"; //Sinon insert
-			$req=mysqli_query($bdd,$str);	
-			
-		}
-		
-	}else if (isset($_POST['cause']) && $_POST['cause'] == "Non renseigné"){ //Si pas rensigné
-		
-		if(mysqli_num_rows($reqCauActuel)>0) //Et que l'anomalie a été déjà rensigné auparavanht
-		{
-			
-			$str="delete from cause_anomalie where idEssai_ESSAI = $idEs"; //Supression
-			$req=mysqli_query($bdd,$str);	
-		}
-	}
-	
-	//Moyen
-	if($_POST['moyen']!=-1)
-		$moyen=$_POST['moyen'];
-	else
-		$moyen="";
-	
-	//OFs
-	$tabnOf=array();
-	if(isset($_POST['n_of']))
-	{
-		$tabnOf=$_POST['n_of'];
-		$tabModele=$_POST['modele'];	
-		$tabArticle=$_POST['article'];
-	}
-	
-	//construction des dates format sql
-	$dateDeb=explode('/',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['dateDebut'])));
-	$dateFin=explode('/',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['dateFin'])));
-	$hDebut=explode(':',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['hDebut'])));
-	$hFin=explode(':',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['hFin'])));
-	
-	//date renvoi une date dans un format, et mktime crée un timestamp selon les arguments fournies
-	// -> dans l'ordre : heure / minute / seconde / mois / jours / année
-	$dateFormDeb=date("Y-m-d H:i:s",mktime($hDebut[0], $hDebut[1], 0, $dateDeb[1], $dateDeb[0], $dateDeb[2]));
-	$dateFormFin=date("Y-m-d H:i:s",mktime($hFin[0], $hFin[1], 0, $dateFin[1], $dateFin[0], $dateFin[2]));
-
-	//Stockage du dépositaire
-	$idDep=$_POST["depositaire"];
-	if ($idDep == "-1") $idDep = "NULL";
-	
-	$str="UPDATE essai set badge='$badge', affaire='$affaire',equipement='$equipement', os='$os', commentaire='$remarque', idMoyen_MOYEN='$moyen', idDep_depositaire='$idDep', date_debut='$dateFormDeb', date_fin='$dateFormFin' where idEssai=$idEs ;";
-	$str = str_replace("''", "null", $str);//on remplace tous les ,'', (du au fait d'une valeur null) par null
-	$req=@mysqli_query($bdd,$str);
-	
-	$str="select max(idEtat_ETAT) as etat from etatessai where idEssai_ESSAI= $idEs ;";
-	$req=@mysqli_query($bdd,$str);
-	$etat=mysqli_fetch_object($req)->etat;
-	if ($etat <= 22){
-		$str="UPDATE essai set badge='$badge', affaire='$affaire',equipement='$equipement', os='$os', commentaire='$remarque', idMoyen_MOYEN='$moyen', idDep_depositaire=$idDep, date_debut='$dateFormDeb', date_fin='$dateFormFin', date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFormFin' where idEssai=$idEs ;";
-		$req=@mysqli_query($bdd,$str);
-	}
-
-	//on rajoute les nouveaux match
-	$stop=false; //sert a stoper immediatement la boucle en cas d'erreur, permet aussi de tester si il y a eu des erreurs
-	
-	//on supprime les anciens match
-	$str="delete from tester where idEssai_essai=$idEs ;";
-	$req=mysqli_query($bdd,$str);
-	
-	for($i=0; !$stop && $i < count($tabnOf);$i++){
-		$noOF=htmlspecialchars(mysqli_real_escape_string($bdd,$tabnOf[$i]));
-		$modele=$tabModele[$i];
-		$article=$tabArticle[$i];
-		//on verifie que l'OF existe
-		$str="select noOF as nb from EQUIPEMENT_OF where noOF='$noOF';";
-		$req=@mysqli_query($bdd,$str);
-		if(!$req){
-			echo '<div class="alert alert-danger"><strong>Erreur de verification de l\'of</strong></div>';
-			$stop=true;
-		}
-		else{
-			if(mysqli_num_rows($req)==0) //nouvel of
+			if(mysqli_num_rows($reqTechActuel)>0)
 			{
-				$str="insert into EQUIPEMENT_OF values('$noOF',$modele, '$article');";
+				
+				$str="delete from vibtesterpar where idEssai = $idEs";
+				$req=mysqli_query($bdd,$str);	
+			}
+			
+		}
+		
+		//Famille de produit
+		$str = "SELECT famille_Famille FROM famille_essai WHERE idEssai_Essai=$idEs;";
+		$reqFamActuel=mysqli_query($bdd,$str);
+		
+		if (isset($_POST['famille']) && $_POST['famille'] != "Non renseigné"){
+
+			$choix = explode ("-",$_POST['famille']);
+			$famille = $choix[1];
+			$modele = $choix[0];
+			$heure = $_POST['heure_famille'];
+			if(mysqli_num_rows($reqFamActuel)>0)
+			{
+				
+				$str="UPDATE famille_essai set famille_FAMILLE='$famille', heure_FAMILLE='$heure', modeleFamille_FAMILLE='$modele', resteHeure= '$heure' where idEssai_ESSAI = $idEs";
 				$req=mysqli_query($bdd,$str);
-				if(!$req){
-					echo '<div class="alert alert-danger"><strong>Erreur de création de l\'of</strong></div>';
-					$stop=true;
-				}
+				
+			}else{
+				
+				$str="INSERT into famille_essai value($idEs, '$famille', '$heure', '$modele', '$heure', NULL)";
+				$req=mysqli_query($bdd,$str);	
+				
+			}
+			
+			
+		}else if (isset($_POST['famille']) && $_POST['famille'] == "Non renseigné"){
+			
+			if(mysqli_num_rows($reqFamActuel)>0)
+			{
+				
+				$str="delete from famille_essai where idEssai_ESSAI = $idEs";
+				$req=mysqli_query($bdd,$str);	
+			}
+		}
+
+		//Cause anomalie
+		$str = "SELECT nomCause FROM cause_anomalie WHERE idEssai_ESSAI=$idEs;";
+		$reqCauActuel=mysqli_query($bdd,$str);
+
+		if (isset($_POST["anomalie"]) && isset($_POST['cause']) && $_POST['cause'] != "Non renseigné"){ //Si renseigné
+			
+			$cause = $_POST['cause'];
+			if(mysqli_num_rows($reqCauActuel)>0) //Et que avant la cause était renseigné
+			{
+				
+				$str="update cause_anomalie set nomCause='$cause' where idEssai_ESSAI = $idEs"; //Update
+				$req=mysqli_query($bdd,$str);
+				
+			}else{
+				
+				$str="insert into cause_anomalie value($idEs, '$cause')"; //Sinon insert
+				$req=mysqli_query($bdd,$str);	
+				
+			}
+			
+		}else if (isset($_POST['cause']) && $_POST['cause'] == "Non renseigné"){ //Si pas rensigné
+			
+			if(mysqli_num_rows($reqCauActuel)>0) //Et que l'anomalie a été déjà rensigné auparavanht
+			{
+				
+				$str="delete from cause_anomalie where idEssai_ESSAI = $idEs"; //Supression
+				$req=mysqli_query($bdd,$str);	
+			}
+		}
+		
+		//Moyen
+		if($_POST['moyen']!=-1)
+			$moyen=$_POST['moyen'];
+		else
+			$moyen="";
+		
+		//OFs
+		$tabnOf=array();
+		if(isset($_POST['n_of']))
+		{
+			$tabnOf=$_POST['n_of'];
+			$tabModele=$_POST['modele'];	
+			$tabArticle=$_POST['article'];
+		}
+		
+		//construction des dates format sql
+		$dateDeb=explode('/',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['dateDebut'])));
+		$dateFin=explode('/',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['dateFin'])));
+		$hDebut=explode(':',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['hDebut'])));
+		$hFin=explode(':',htmlspecialchars(mysqli_real_escape_string($bdd,$_POST['hFin'])));
+		
+		//date renvoi une date dans un format, et mktime crée un timestamp selon les arguments fournies
+		// -> dans l'ordre : heure / minute / seconde / mois / jours / année
+		$dateFormDeb=date("Y-m-d H:i:s",mktime($hDebut[0], $hDebut[1], 0, $dateDeb[1], $dateDeb[0], $dateDeb[2]));
+		$dateFormFin=date("Y-m-d H:i:s",mktime($hFin[0], $hFin[1], 0, $dateFin[1], $dateFin[0], $dateFin[2]));
+
+		//Stockage du dépositaire
+		$idDep=$_POST["depositaire"];
+		if ($idDep == "-1") $idDep = NULL;
+		
+		$str="UPDATE essai set badge='$badge', affaire='$affaire',equipement='$equipement', os='$os', commentaire='$remarque', idMoyen_MOYEN='$moyen', idDep_depositaire='$idDep', date_debut='$dateFormDeb', date_fin='$dateFormFin' where idEssai=$idEs ;";
+		$str = str_replace("''", "null", $str);//on remplace tous les ,'', (du au fait d'une valeur null) par null
+		$req=@mysqli_query($bdd,$str);
+		
+		$str="select max(idEtat_ETAT) as etat from etatessai where idEssai_ESSAI= $idEs ;";
+		$req=@mysqli_query($bdd,$str);
+		$etat=mysqli_fetch_object($req)->etat;
+		if ($etat <= 22){
+			$str="UPDATE essai set badge='$badge', affaire='$affaire',equipement='$equipement', os='$os', commentaire='$remarque', idMoyen_MOYEN='$moyen', idDep_depositaire=$idDep, date_debut='$dateFormDeb', date_fin='$dateFormFin', date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFormFin' where idEssai=$idEs ;";
+			$req=@mysqli_query($bdd,$str);
+		}
+
+		//on rajoute les nouveaux match
+		$stop=false; //sert a stoper immediatement la boucle en cas d'erreur, permet aussi de tester si il y a eu des erreurs
+		
+		//on supprime les anciens match
+		$str="delete from tester where idEssai_essai=$idEs ;";
+		$req=mysqli_query($bdd,$str);
+		
+		for($i=0; !$stop && $i < count($tabnOf);$i++){
+			$noOF=htmlspecialchars(mysqli_real_escape_string($bdd,$tabnOf[$i]));
+			$modele=$tabModele[$i];
+			$article=$tabArticle[$i];
+			//on verifie que l'OF existe
+			$str="select noOF as nb from EQUIPEMENT_OF where noOF='$noOF';";
+			$req=@mysqli_query($bdd,$str);
+			if(!$req){
+				echo '<div class="alert alert-danger"><strong>Erreur de verification de l\'of</strong></div>';
+				$stop=true;
 			}
 			else{
-				$str="update EQUIPEMENT_OF set idModele_TYPE_MODELE=$modele, article='$article' where noOF='$noOF';";
-				$req=mysqli_query($bdd,$str);
-				echo mysqli_error($bdd);
-				if(!$req){
-					echo '<div class="alert alert-danger"><strong>Erreur de mis à jours de l\'of</strong></div>';
-					$stop=true;
+				if(mysqli_num_rows($req)==0) //nouvel of
+				{
+					$str="insert into EQUIPEMENT_OF values('$noOF',$modele, '$article');";
+					$req=mysqli_query($bdd,$str);
+					if(!$req){
+						echo '<div class="alert alert-danger"><strong>Erreur de création de l\'of</strong></div>';
+						$stop=true;
+					}
 				}
+				else{
+					$str="update EQUIPEMENT_OF set idModele_TYPE_MODELE=$modele, article='$article' where noOF='$noOF';";
+					$req=mysqli_query($bdd,$str);
+					echo mysqli_error($bdd);
+					if(!$req){
+						echo '<div class="alert alert-danger"><strong>Erreur de mis à jours de l\'of</strong></div>';
+						$stop=true;
+					}
+				}
+				
+				//insertion du match essai OF
+				$str="insert into tester values('$noOF',$idEs);";
+				
+				$req=mysqli_query($bdd,$str);
+				if(!$req){
+					echo '<div class="alert alert-danger"><strong>Erreur de d\'ajout du test entre l\'of crée et l\'essai</strong></div>';
+					$stop=true;
+				}				
 			}
 			
-			//insertion du match essai OF
-			$str="insert into tester values('$noOF',$idEs);";
-			
-			$req=mysqli_query($bdd,$str);
-			if(!$req){
-				echo '<div class="alert alert-danger"><strong>Erreur de d\'ajout du test entre l\'of crée et l\'essai</strong></div>';
-				$stop=true;
-			}				
 		}
-		
-	}
 
-	$str = "SELECT duree_planifie, deux_huit, samedi FROm essai WHERE idEssai=$idEs";
-	$req=@mysqli_query($bdd,$str);
-	$lg = mysqli_fetch_object($req);
-	$deux_huit = $lg->deux_huit;
-	$samedi = $lg->samedi;
-	$duree_planifie = $lg->duree_planifie;
-	$change = false;
+		$str = "SELECT duree_planifie, deux_huit, samedi FROm essai WHERE idEssai=$idEs";
+		$req=@mysqli_query($bdd,$str);
+		$lg = mysqli_fetch_object($req);
+		$deux_huit = $lg->deux_huit;
+		$samedi = $lg->samedi;
+		$duree_planifie = $lg->duree_planifie;
+		$change = false;
 
-	$duree = dureePrimavera($dateFormDeb, $dateFormFin);
+		$duree = dureePrimavera($dateFormDeb, $dateFormFin);
 
-	if (isset($_POST["samedi"]) && $samedi == 0)
-	{
-		$samedi = samedi ($dateFormDeb, $dateFormFin, $duree);
-		if ($samedi != 0)
+		if (isset($_POST["samedi"]) && $samedi == 0)
 		{
-			if($duree == 0) $duree = $samedi;
-			$dateFin = dateFin(round($duree*9,1), $dateFormDeb, 1);
+			$samedi = samedi ($dateFormDeb, $dateFormFin, $duree);
+			if ($samedi != 0)
+			{
+				if($duree == 0) $duree = $samedi;
+				$dateFin = dateFin(round($duree*9,1), $dateFormDeb, 1);
+				if ($etat <= 22){
+					$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
+					$req=@mysqli_query($bdd,$str);
+				}
+
+				$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', samedi = $samedi where idEssai=$idEs ;";
+				$req=@mysqli_query($bdd,$str);
+			}else
+			{
+				echo '<div class="alert alert-danger"><strong>L\'essai ne se trouve pas pendant un samedi. Veuillez changer la date de l\'essai.</strong></div>';
+					$stop=true;
+			}
+			
+			$change = true;
+
+		}else if (!isset($_POST["samedi"]) && $samedi != 0)
+		{
+			$duree += $samedi;
+			$dateFin = dateFin(round($duree*9,1), $dateFormDeb, 0);
+			if ($etat <= 22){
+				$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
+				$req=@mysqli_query($bdd,$str);
+			}
+			$change = true;
+			$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', samedi = 0 where idEssai=$idEs ;";
+			$req=@mysqli_query($bdd,$str);
+		}
+
+
+		if (isset($_POST["deux_huit"]) && $deux_huit == 0)
+		{
+
+			$duree = $duree_planifie/2;
+			$dateFin = dateFin(round($duree*9,1), $dateFormDeb, $samedi);
+			if ($etat <= 22){
+				$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
+				$req=@mysqli_query($bdd,$str);
+			}
+			$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', deux_huit = 1 where idEssai=$idEs ;";
+			$req=@mysqli_query($bdd,$str);
+			$change = true; 
+
+		}else if (!isset($_POST["deux_huit"]) && $deux_huit == 1) {
+
+			$duree = $duree_planifie*2;
+			$dateFin = dateFin(round($duree*9,1), $dateFormDeb, $samedi);
 			if ($etat <= 22){
 				$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
 				$req=@mysqli_query($bdd,$str);
 			}
 
-			$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', samedi = $samedi where idEssai=$idEs ;";
+			$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', deux_huit = 0 where idEssai=$idEs ;";
 			$req=@mysqli_query($bdd,$str);
-		}else
+			$change = true;
+		}
+
+		if ($change == false)
 		{
-			echo '<div class="alert alert-danger"><strong>L\'essai ne se trouve pas pendant un samedi. Veuillez changer la date de l\'essai.</strong></div>';
-				$stop=true;
+			if ($etat <= 22){
+				$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
+				$req=@mysqli_query($bdd,$str);
+			}
+			$str="UPDATE essai set duree_actuelle = $duree, date_debut='$dateFormDeb', date_fin='$dateFormFin' where idEssai=$idEs ;";
+			$req=@mysqli_query($bdd,$str);
 		}
+
+
+
 		
-		$change = true;
-
-	}else if (!isset($_POST["samedi"]) && $samedi != 0)
-	{
-		$duree += $samedi;
-		$dateFin = dateFin(round($duree*9,1), $dateFormDeb, 0);
-		if ($etat <= 22){
-			$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
-			$req=@mysqli_query($bdd,$str);
-		}
-		$change = true;
-		$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', samedi = 0 where idEssai=$idEs ;";
-		$req=@mysqli_query($bdd,$str);
-	}
-
-
-	if (isset($_POST["deux_huit"]) && $deux_huit == 0)
-	{
-
-		$duree = $duree_planifie/2;
-		$dateFin = dateFin(round($duree*9,1), $dateFormDeb, $samedi);
-		if ($etat <= 22){
-			$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
-			$req=@mysqli_query($bdd,$str);
-		}
-		$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', deux_huit = 1 where idEssai=$idEs ;";
-		$req=@mysqli_query($bdd,$str);
-		$change = true; 
-
-	}else if (!isset($_POST["deux_huit"]) && $deux_huit == 1) {
-
-		$duree = $duree_planifie*2;
-		$dateFin = dateFin(round($duree*9,1), $dateFormDeb, $samedi);
-		if ($etat <= 22){
-			$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
-			$req=@mysqli_query($bdd,$str);
-		}
-
-		$str="UPDATE essai set date_debut_prevu='$dateFormDeb', date_fin_prevu='$dateFin', duree_actuelle = $duree, date_fin='$dateFin', deux_huit = 0 where idEssai=$idEs ;";
-		$req=@mysqli_query($bdd,$str);
-		$change = true;
-	}
-
-	if ($change == false)
-	{
-		if ($etat <= 22){
-			$str="UPDATE essai set duree_planifie = $duree where idEssai=$idEs ;";
-			$req=@mysqli_query($bdd,$str);
-		}
-		$str="UPDATE essai set duree_actuelle = $duree, date_debut='$dateFormDeb', date_fin='$dateFormFin' where idEssai=$idEs ;";
-		$req=@mysqli_query($bdd,$str);
-	}
-
-
-
-	
-	if(!$stop && !isset($_GET["back"]))
-	{
-		echo '<script src="../js/success.js"></script>';
-	}else if (isset($_GET["back"]) && !$stop){
+		if(!$stop && !isset($_GET["back"]))
+		{
+			echo '<script src="../js/success.js"></script>';
+		}else if (isset($_GET["back"]) && !$stop){
+			
+			echo '<script>function redirection(){
 		
-		echo '<script>function redirection(){
-	
-			document.location.href="'.$_GET["back"].'.php";
-		}
+				document.location.href="'.$_GET["back"].'.php";
+			}
 
-		swal({
-			
-			title : "Informations validées",
-			text : "Redirection dans quelques instants",
-			icon : "success"
-			
-		});
-		setTimeout(redirection, 1000);</script>';
-	}
+			swal({
 				
-}else {
-	echo '<div class="text-center">';
-	echo '<div class="alert alert-danger"><strong>Erreur de saisie de la date</strong></div>';
-	echo '</div>';
-}
+				title : "Informations validées",
+				text : "Redirection dans quelques instants",
+				icon : "success"
+				
+			});
+			setTimeout(redirection, 1000);</script>';
+		}
+				
+	}else {
+		echo '<div class="text-center">';
+		echo '<div class="alert alert-danger"><strong>Erreur de saisie de la date</strong></div>';
+		echo '</div>';
+	}
 }
 elseif(!isset($_GET["idEssai"]))
 	echo '<div class="alert alert-danger"><strong>Erreur de récéption du numéro de l\'essai</strong></div>';

@@ -59,12 +59,11 @@ if (isset($_POST['badge'])){
 
 	//Stockage du dépositaire
 	$idDep=$_POST["depositaire"];
-	if ($idDep == "-1") $idDep = "NULL";
+	if ($idDep == "-1") $idDep = null;
 
 	$duree = dureePrimavera($dateFormDeb, $dateFormFin);
 
-	$str="INSERT into essai values (NULL,NULL,'$badge','$affaire','$equipement','$os','$remarque','$idLabo','$moyen','$fifo','0','0','$idDep','$dateFormDeb','$dateFormFin','$dateFormDeb','$dateFormFin',0,1,0, $ligne, 0, $duree, $duree, 0, 0);";
-
+	$str="INSERT into essai values (NULL,NULL,'$badge','$affaire','$equipement','$os','$remarque','$idLabo','$moyen','$fifo','0','0','$idDep','$dateFormDeb','$dateFormFin','$dateFormDeb','$dateFormFin', '$dateFormDeb',0,1,0, $ligne, 0, $duree, $duree, $duree, 0, 0);";
 	$str = str_replace("''", "null", $str);//on remplace tous les ,'', (du au fait d'une valeur null) par null
 	$req=@mysqli_query($bdd,$str);
 	if(!$req){

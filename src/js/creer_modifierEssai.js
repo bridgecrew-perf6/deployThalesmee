@@ -199,12 +199,14 @@ $("#anomalie").change(function(){
 
 function initDate (obj)
 {
-	var _date = $(obj).val().replace(/\s/g,"");
+	var _date = $("#dateDebut").val().replace(/\s/g,"");
 	var date = _date.split("/");
 	var date1 = new Date (date[2]+"-"+date[1]+"-"+date[0]+" "+$("#hDebut").val()+":00");
-	var date = $("#dateFin").val().split("/");
+	_date = $("#dateFin").val().replace(/\s/g,"");
+	date = $("#dateFin").val().split("/");
 	var date2 = new Date (date[2]+"-"+date[1]+"-"+date[0]+" "+$("#hFin").val()+":00");
 	ecart = dateDiff (date1, date2);
+	console.log(ecart);
 }
 
 function majDateFin (obj)
@@ -222,7 +224,7 @@ function majDateFin (obj)
 
 	var mois = parseInt(date1.getMonth())+1;
 
-	if (mois > 11) res += "01/";	
+	if (mois > 12) res += "01/";	
 	else if (mois < 10) res += "0"+mois+"/";	
 	else  res += mois+"/";
 
@@ -262,7 +264,8 @@ $("#hDebut").click(function (){
 	var _date = $("#dateDebut").val().replace(/\s/g,"");
 	var date = _date.split("/");
 	var date1 = new Date (date[2]+"-"+date[1]+"-"+date[0]+" "+$(this).val()+":00");
-	var date = $("#dateFin").val().split("/");
+	_date = $("#dateFin").val().replace(/\s/g,"");
+	date = $("#dateFin").val().split("/");
 	var date2 = new Date (date[2]+"-"+date[1]+"-"+date[0]+" "+$("#hFin").val()+":00");
 	ecart = dateDiff (date1, date2);
 });

@@ -1,4 +1,0 @@
-# deployThalesmee
-
-Test jenkins
-

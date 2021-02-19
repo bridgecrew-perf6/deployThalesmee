@@ -2,7 +2,7 @@
 /*Ce fichier contient les parametres pour se connecter a la base de donnees en local.*/
 
 
-$add="db";	/*serveur local*/
+$add=getenv("DATABASE");	/*serveur local*/
 $log="mee";	/*utilisateur mee*/
 $pass="pipo";	/*mot de passe*/
 $nom_db="bdmee_prod"; /*nom de la base de donnees */

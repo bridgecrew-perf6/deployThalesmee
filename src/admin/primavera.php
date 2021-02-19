@@ -227,7 +227,7 @@ function ajouterEssai($tab,$tabMoyenInconnue,$bdd)
 			//On regarde si l'heure est inferueur à 12h
 			if ($date_debut > $date_fin)
 			{
-				//Vérification que le premier caractède la date de début est un 0
+				//Vérification que le premier caractère de la date de début est un 0
 				if ($heure[0] == '0')
 				{					
 					//Dans ce cas la l'heure est donc le deuxième caractère
@@ -290,24 +290,23 @@ function ajouterEssai($tab,$tabMoyenInconnue,$bdd)
 					}else
 					{
 						//Date changée à la main
-						if (strtotime($lg->date_debut_primavera) != strtotime($lg->date_debut) || $lg->duree_planifie*9 != $lg->duree_planifie_primavera)
+						if (strtotime($lg->date_debut_primavera) != strtotime($lg->date_debut) || $lg->duree_planifie != $lg->duree_planifie_primavera)
 						{
-							$dplanif = $lg->duree_planifie*9;
-							$newdatefin = dFin($dplanif, $date_debut, 0);
+
 							//Si la date planifié é été changée à la main on ne bouge pas l'essai
-							$str="UPDATE essai set affaire='$affaire', equipement='$equip', os='$os', idMoyen_moyen='$moyen', date_debut_primavera='$date_debut', duree_planifie_primavera = $duree_planifie, date_debut='$date_debut', date_debut_prevu='$date_debut', date_fin_prevu='$newdatefin', date_fin='$newdatefin'
+							$str="UPDATE essai set affaire='$affaire', equipement='$equip', os='$os', idMoyen_moyen='$moyen', date_debut_primavera='$date_debut', duree_planifie_primavera = $duree_planifie, date_debut_prevu='$date_debut', date_fin_prevu='$date_fin'
 							where idTachePrim='$idPrim';";
+
 							
 						}else
 						{
 							//champs mis à jours ?
 							$str="UPDATE essai set affaire='$affaire', equipement='$equip', os='$os', idMoyen_moyen='$moyen', date_debut='$date_debut', date_fin='$date_fin', date_debut_prevu='$date_debut', date_fin_prevu='$date_fin', date_debut_primavera='$date_debut', duree_planifie = $duree_planifie, duree_actuelle = $duree_actuelle, duree_planifie_primavera = $duree_planifie
 							where idTachePrim='$idPrim';";
+
 						}
 					}
 
-					
-					
 
 					$str = str_replace("''", "NULL", $str);//on remplace tous les ,'', (du au fait d'une valeur null) par null
 					$req=mysqli_query($bdd, $str);
@@ -349,13 +348,10 @@ function ajouterEssai($tab,$tabMoyenInconnue,$bdd)
 						$req=mysqli_query($bdd,$str);
 
 						//Date changée à la main
-						if (strtotime($lg->date_debut_primavera) != strtotime($lg->date_debut) || $lg->duree_planifie*9 != $lg->duree_planifie_primavera)
+						if (strtotime($lg->date_debut_primavera) != strtotime($lg->date_debut) || $lg->duree_planifie != $lg->duree_planifie_primavera)
 						{
-							$dplanif = $lg->duree_planifie*9;
-							$newdatefin = dFin($dplanif, $date_debut, 0);
-
 							//Si la date planifié é été changée à la main on ne bouge pas l'essai
-							$str="UPDATE essai set affaire='$affaire', equipement='$equip', os='$os', idMoyen_moyen='$moyen', date_debut_primavera='$date_debut', duree_planifie_primavera = $duree_planifie, date_debut='$date_debut', date_debut_prevu='$date_debut', date_fin_prevu='$newdatefin', date_fin='$newdatefin'
+							$str="UPDATE essai set affaire='$affaire', equipement='$equip', os='$os', idMoyen_moyen='$moyen', date_debut_primavera='$date_debut', duree_planifie_primavera = $duree_planifie, date_debut='$date_debut', date_debut_prevu='$date_debut', date_fin_prevu='$date_fin', date_fin='$date_fin'
 							where idTachePrim='$idPrim';";
 							
 						}else
