@@ -355,8 +355,7 @@ else
 		$lplot->SetColor("#FF0000");
 		
 		$graph->legend->SetFrameWeight(1);	
-		$graph->legend->Pos(0.5,0.925,'center','bottom');
-		$graph->xaxis->SetLabelAngle(30);
+		$graph->legend->Pos(0.5,0.99,'center','bottom');
 
 
 		//Display the graph

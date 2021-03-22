@@ -1,20 +1,27 @@
-# Default docker hub as registry for image. This way, this can be overloaded.
-ARG DOCKER_REGISTRY_URL
-FROM ${DOCKER_REGISTRY_URL}php:5.3.29-apache
+FROM php:7.2-apache
+
+
+RUN apt-get update -y && apt-get install -y libpng-dev
+
+# Install curl php extension as we use it often
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install calendar
 
 # Ajout des droits
-# RUN chmod -R 777 /var/www/html
-# RUN chmod -R 777 /var/lib/php
+RUN chmod -R 777 /var/www/html
 
 # Ajout des polices de caractères
 ADD ./font/arialbd.ttf /usr/share/fonts/truetype/
 ADD ./font/arial.ttf /usr/share/fonts/truetype/
 
-# Copie des fichiers sources 
 COPY ./conf/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY ./conf/php.ini /etc/php5/cli/php.ini
-COPY ./conf/php.ini /etc/php5/apache/php.ini
 COPY ./src/ /var/www/html
+ADD ./conf/php.ini /usr/local/etc/php/
+
 
 # Exposition du port 80
 EXPOSE 80

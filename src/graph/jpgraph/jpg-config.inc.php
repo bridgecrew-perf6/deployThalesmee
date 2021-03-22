@@ -39,7 +39,6 @@
 // define('TTF_DIR','/usr/share/fonts/TrueType/');
 // define('MBTTF_DIR','/usr/share/fonts/TrueType/');
 
-
 //-------------------------------------------------------------------------
 // Cache directory specification for use with CSIM graphs that are
 // using the cache.
@@ -135,10 +134,5 @@ define('DEFAULT_THEME_CLASS', 'UniversalTheme');
 
 define('SUPERSAMPLING', true);
 define('SUPERSAMPLING_SCALE', 1);
-
-//define("CACHE_DIR","C:/WINNT\Temp/");
-//define("TTF_DIR","C:/WINNT/Fonts/");
-//define("MBTTF_DIR","C:/WINNT/Fonts/");
-
 
 ?>
