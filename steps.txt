@@ -1,0 +1,5 @@
+Comment migrer vers php7.2
+
+1/ Installer nouvelle version de jpGraph (./update/jpgraph/)
+2/ Installer nouvelle version de php Excel (./update/Classes/)
+3/ Remove SetLabelAngle pour la légende (fpy, fiabilité prévision, retard fin de test, efiicacité tenu des cycles, 
