@@ -1,9 +1,9 @@
-FROM php:7.2-apache
-
+ARG DOCKER_REGISTRY_URL
+FROM ${DOCKER_REGISTRY_URL}php:7.2-apache
 
 RUN apt-get update -y && apt-get install -y libpng-dev
 
-# Install curl php extension as we use it often
+# Installation des extensions
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install gd
@@ -18,6 +18,7 @@ RUN chmod -R 777 /var/www/html
 ADD ./font/arialbd.ttf /usr/share/fonts/truetype/
 ADD ./font/arial.ttf /usr/share/fonts/truetype/
 
+# Copie des fichiers sources
 COPY ./conf/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./src/ /var/www/html
 ADD ./conf/php.ini /usr/local/etc/php/
