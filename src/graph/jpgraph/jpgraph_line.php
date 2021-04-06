@@ -35,10 +35,9 @@ class LinePlot extends Plot{
 
     //---------------
     // CONSTRUCTOR
-    function LinePlot($datay,$datax=false) {
+    function __construct($datay,$datax=false) {
         parent::__construct($datay,$datax);
         $this->mark = new PlotMark() ;
-		$this->weight = 50;
         $this->color = ColorFactory::getColor();
         $this->fill_color = $this->color;
     }
@@ -47,10 +46,6 @@ class LinePlot extends Plot{
 
     function SetFilled($aFlg=true) {
 		$this->filled = $aFlg;
-    }
-	
-	function SetWeight($weight) {
-		$this->weight = $weight;
     }
 
     function SetBarCenter($aFlag=true) {
