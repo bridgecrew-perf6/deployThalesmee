@@ -208,8 +208,6 @@ $graph->legend->SetColumns(6);
 $graph->legend->SetColor('#4E4E4E','black');
 $graph->legend->SetLayout(LEGEND_VERT);
 $graph->legend->SetFont(FF_ARIAL,FS_NORMAL,11);
-$graph->xaxis->SetLabelAngle(45);
-
 
 //Display the graph
 $graph->Stroke();

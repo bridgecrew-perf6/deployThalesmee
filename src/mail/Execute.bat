@@ -1,1 +1,0 @@
-ftp -s:ordre.ftp

@@ -299,7 +299,6 @@ else
 		$graph->legend->SetColor('#4E4E4E','black');
 		$graph->legend->SetLayout(LEGEND_VERT);
 		$graph->legend->SetFont(FF_ARIAL,FS_NORMAL,11);
-		$graph->xaxis->SetLabelAngle(30);
 
 	
 		$lplot->SetLegend('Target');
