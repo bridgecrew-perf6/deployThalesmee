@@ -1,0 +1,45 @@
+.fadein-animation
+{
+	animation: fadein 5s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	position:absolute;
+	width: 100%;
+}
+
+@keyframes fadein
+{
+	from{left: -100%}
+	to{left: 0px}
+}
+
+.fadeout-animation
+{
+	animation: fadeout 5s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	position:absolute;
+	width: 100%;
+}
+
+@keyframes fadeout
+{
+	from{right: 0px}
+	to{right: -100%}
+}
+
+.jumbotron
+{
+	padding-top: 10px;
+	margin-top: 10px;
+}
+
+#titre
+{
+	margin-bottom: 40px;
+}
+
+body
+{
+	padding: 0;
+}

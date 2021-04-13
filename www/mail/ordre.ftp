@@ -1,0 +1,5 @@
+open tlfwrdp01
+ftpnotes
+profnote
+put ./corps.txt ppbh.ferril.15791674252
+quit
