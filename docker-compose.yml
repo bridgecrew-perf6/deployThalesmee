@@ -3,8 +3,7 @@ services:
 
   apache:
 
-    build: './'
-    restart: always
+    image: thalesmee
     depends_on:
       - db
     ports:
