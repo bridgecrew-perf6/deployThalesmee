@@ -20,7 +20,7 @@ ADD ./font/arial.ttf /usr/share/fonts/truetype/
 
 # Copie des fichiers sources
 COPY ./conf/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY ./src/ /var/www/html
+COPY ./www/ /var/www/html
 ADD ./conf/php.ini /usr/local/etc/php/
 
 
