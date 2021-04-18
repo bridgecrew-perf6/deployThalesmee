@@ -10,16 +10,16 @@ services:
       - "80:80"
     environment:
        - DATABASE=db
-       - PHP.mysqli.default_port=3305
+       - PHP.mysqli.default_port=3306
 
   db:
 
-    image: mariadb:latest
+    image: mariadb:10.5.9
     restart : always
     ports: 
       - 3306:3306
-    command: --lower_case_table_names=1
     volumes:
+      - ./conf/my.cnf:/etc/mysql/my.cnf
       - db-volume:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=pipo2000
