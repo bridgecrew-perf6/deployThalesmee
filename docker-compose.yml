@@ -5,15 +5,14 @@ services:
 
     image: thalesmee
     depends_on:
-      - db
+      - mariadb
     ports:
       - "80:80"
     environment:
-       - DATABASE=db
+       - DATABASE=mariadb
        - PHP.mysqli.default_port=3306
 
-  db:
-
+  mariadb:
     image: mariadb:10.5.9
     restart : always
     ports: 
